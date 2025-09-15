@@ -2,12 +2,10 @@ import streamlit as st
 from openai import OpenAI
 
 # Show title and description.
-st.title("💬 Chatbot")
+st.title("Sing Sing")
 st.write(
-    "This is a simple chatbot that uses OpenAI's GPT-3.5 model to generate responses. "
-    "To use this app, you need to provide an OpenAI API key, which you can get [here](https://platform.openai.com/account/api-keys). "
-    "You can also learn how to build this app step by step by [following our tutorial](https://docs.streamlit.io/develop/tutorials/llms/build-conversational-apps)."
-)
+    "안녕하세요! 싱가폴 가족 여행 전문 AI 가이드에요"
+   )
 
 # Ask user for their OpenAI API key via `st.text_input`.
 # Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
@@ -23,7 +21,9 @@ else:
     # Create a session state variable to store the chat messages. This ensures that the
     # messages persist across reruns.
     if "messages" not in st.session_state:
-        st.session_state.messages = []
+        st.session_state.messages = [
+            {"role": "assistant", "content": "안녕하세요! 어딜 가실건가요?"}
+        ]
 
     # Display the existing chat messages via `st.chat_message`.
     for message in st.session_state.messages:
@@ -32,7 +32,7 @@ else:
 
     # Create a chat input field to allow the user to enter a message. This will display
     # automatically at the bottom of the page.
-    if prompt := st.chat_input("What is up?"):
+    if prompt := st.chat_input("가고싶은 곳을 입력하세요."):
 
         # Store and display the current prompt.
         st.session_state.messages.append({"role": "user", "content": prompt})
@@ -41,9 +41,10 @@ else:
 
         # Generate a response using the OpenAI API.
         stream = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o",
             messages=[
-                {"role": m["role"], "content": m["content"]}
+                {"role": "system", 
+                 "content": "너는 싱가폴 가족여행 전문 투어가이드야. number bullet point를 사용해서 항상 우선순위를 기반으로 대답해줘. 순위는 google 데이터를 기반으로. 모든 답변은 한국어로. 대상 사용자는 16개월 아기와 동행하는 가족이야."}
                 for m in st.session_state.messages
             ],
             stream=True,
