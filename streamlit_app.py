@@ -50,3 +50,8 @@ if "OPENAI_API_KEY" in st.secrets:
         with st.chat_message("assistant"):
             response = st.write_stream(stream)
         st.session_state.messages.append({"role": "assistant", "content": response})
+
+else:
+    # API 키가 secrets.toml에 없을 경우 안내 메시지 표시
+    st.error("OpenAI API 키를 .streamlit/secrets.toml 파일에 설정해주세요.")
+
