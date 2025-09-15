@@ -41,7 +41,7 @@ else:
 
         # Generate a response using the OpenAI API.
         stream = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "system", 
                  "content": "너는 싱가폴 가족여행 전문 맛집가이드야. number bullet point를 사용해서 항상 우선순위를 기반으로 대답해줘. 순위는 google 맵 맛집 별점을 기반으로. 모든 답변은 한국어로. 대상 사용자는 16개월 아기와 동행하는 가족이야."}
